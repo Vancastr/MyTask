@@ -25,6 +25,7 @@ def webhook_out():
                     {
                         "fields": {
                             "Name": "Задача 4",
+                            "ID": "1",
                             "Status": "In progress",
                             "Start date": "2023-12-13",
                             "Deadline": "2023-12-30"
@@ -35,6 +36,7 @@ def webhook_out():
             for i in data['result']:
                 if i['ID'] == ID:
                     info['records'][0]['fields']['Name'] = i['TITLE']
+                    info['records'][0]['fields']['ID'] = ID
                     info['records'][0]['fields']['Deadline'] = i['DEADLINE'][:10]
                     info['records'][0]['fields']['Start date'] = i['CREATED_DATE'][:10]
                     if i['REAL_STATUS'] == '1':
@@ -67,6 +69,7 @@ def webhook_out():
                         "id": task_id,
                         "fields": {
                             "Name": "Задача 4",
+                            "ID": "1",
                             "Status": "In progress",
                             "Start date": "2023-12-13",
                             "Deadline": "2023-12-30"
@@ -77,6 +80,7 @@ def webhook_out():
             for i in data['result']:
                 if i['ID'] == ID:
                     info['records'][0]['fields']['Name'] = i['TITLE']
+                    info['records'][0]['fields']['ID'] = ID
                     info['records'][0]['fields']['Deadline'] = i['DEADLINE'][:10]
                     info['records'][0]['fields']['Start date'] = i['CREATED_DATE'][:10]
                     if i['REAL_STATUS'] == '1':
@@ -90,7 +94,7 @@ def webhook_out():
                     elif i['REAL_STATUS'] == '5':
                         info['records'][0]['fields']['Status'] = 'Done'
             print(info)
-            response = requests.post(address, headers=headers, json=info)
+            response = requests.patch(address, headers=headers, json=info)
             print(response.text)
         elif res['event'] == 'ONTASKDELETE':
             ID = res['data[FIELDS_BEFORE][ID]']
