@@ -58,7 +58,7 @@ def webhook_out():
             data = requests.get('https://viantec.bitrix24.ru/rest/345/7z6g7j7n1loz8nk5/task.item.list.json').json()
             full = requests.get(address, headers={"Authorization": fin})
             print(full.text)
-            reg = r'{"id".*"ID":' + f'"{ID}"'
+            reg = r'{[\w\d" А-Яа-я,:\-\.]*{[\w\d" А-Яа-я,:\-\.]*"ID":' + f'"{ID}"'
             work = re.findall(reg, full.text)
             almost = re.findall(r'"id":".*?",', work[0])
             task_id = almost[0][6:-2]
