@@ -60,6 +60,7 @@ def webhook_out():
             ID = res['data[FIELDS_AFTER][ID]']
             with open('IDs.txt', 'r', encoding='utf-8') as file:
                 js = json.load(file)
+            print(js)
             task_id = js[0][ID]
             print(res)
             data = requests.get('https://viantec.bitrix24.ru/rest/345/7z6g7j7n1loz8nk5/task.item.list.json').json()
