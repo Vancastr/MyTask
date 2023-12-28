@@ -113,29 +113,7 @@ def webhook_out():
             response = requests.delete(address, headers=headers, params=params)
             print(response.status_code)
             print(response.json())
-        print(res)
-        data = requests.get('https://viantec.bitrix24.ru/rest/345/7z6g7j7n1loz8nk5/task.item.list.json').json()
-        info = {
-                "records": [
-                    {
-                        "fields": {
-                            "Name": "Задача 4",
-                            "Status": "In progress",
-                            "Start date": "2023-12-13",
-                            "Deadline": "2023-12-30"
-                        }
-                    }
-                ]
-            }
         
-        for i in data['result']:
-            if i['ID'] == ID:
-                info['TITLE'] = i['TITLE']
-                info['DEADLINE'] = i['DEADLINE']
-                info['CREATED_DATE'] = i['CREATED_DATE']
-                info['STATUS'] = i['STATUS']
-        print(info)
-            
         return 'success', 200
     else:
         abort(400)
