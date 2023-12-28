@@ -98,6 +98,21 @@ def webhook_out():
             print(response.text)
         elif res['event'] == 'ONTASKDELETE':
             ID = res['data[FIELDS_BEFORE][ID]']
+            print(res)
+            full = requests.get(address, headers={"Authorization": fin})
+            print(full.text)
+            reg = r'{"id".*"ID":' + f'"{ID}"'
+            work = re.findall(reg, full.text)
+            almost = re.findall(r'"id":".*?",', work[0])
+            task_id = almost[0][6:-2]
+            print(task_id)
+            params = {
+                'records[]': [task_id]
+            }
+
+            response = requests.delete(address, headers=headers, params=params)
+            print(response.status_code)
+            print(response.json())
         print(res)
         data = requests.get('https://viantec.bitrix24.ru/rest/345/7z6g7j7n1loz8nk5/task.item.list.json').json()
         info = {
