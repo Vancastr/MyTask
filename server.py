@@ -1,6 +1,7 @@
 from flask import Flask, request, abort
 import requests
 import json
+import re
 
 app = Flask(__name__)
 
@@ -48,22 +49,18 @@ def webhook_out():
                         info['records'][0]['fields']['Status'] = 'Done'
             print(info)
             response = requests.post(address, headers=headers, json=info)
-            resp = response.json()
-            task_id = resp['records'][0]['id']
-            with open('IDs.txt', 'r', encoding='utf-8') as file:
-                js = json.load(file)
-            js[0][ID] = task_id
-            with open('IDs.txt', 'w', encoding='utf-8') as file:
-                json.dump(js, file)
             print(response.text)
         elif res['event'] == 'ONTASKUPDATE':
             ID = res['data[FIELDS_AFTER][ID]']
-            with open('IDs.txt', 'r', encoding='utf-8') as file:
-                js = json.load(file)
-            print(js)
-            task_id = js[0][ID]
             print(res)
             data = requests.get('https://viantec.bitrix24.ru/rest/345/7z6g7j7n1loz8nk5/task.item.list.json').json()
+            full = requests.get(address, headers={"Authorization": fin})
+            print(full.text)
+            reg = r'{"id".*"ID":' + f'"{ID}"'
+            work = re.findall(reg, full.text)
+            almost = re.findall(r'"id":".*?",', work[0])
+            task_id = almost[0][6:-2]
+            print(task_id)
             info = {
                 "records": [
                     {
