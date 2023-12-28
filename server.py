@@ -46,7 +46,14 @@ def webhook_out():
                     elif i['REAL_STATUS'] == '5':
                         info['records'][0]['fields']['Status'] = 'Done'
             print(info)
-            response = requests.post(address, headers=headers, json=data)
+            response = requests.post(address, headers=headers, json=info)
+            resp = response.json()
+            task_id = resp['records'][0]['id']
+            with open('IDs.txt', 'r', encoding='utf-8') as file:
+                js = json.load(file)
+            js[0][ID] = task_id
+            with open('IDs.txt', 'w', encoding='utf-8') as file:
+                json.dump(js, file)
             print(response.text)
         elif res['event'] == 'ONTASKUPDATE':
             ID = res['data[FIELDS_AFTER][ID]']
